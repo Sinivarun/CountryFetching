@@ -1,0 +1,123 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+  <meta charset="UTF-8">
+  <meta http-equiv="X-UA-Compatible" content="IE=edge">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Document</title>
+  <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.1.0/dist/css/bootstrap.min.css" rel="stylesheet"
+    integrity="sha384-KyZXEAg3QhqLMpG8r+8fhAXLRk2vvoC2f3B09zVXn8CA5QIVfZOJ3BCsw2P0p/We" crossorigin="anonymous">
+
+    <style>
+      #drop {
+  width: 90%;
+  max-width: 400px;
+ 
+}
+    </style>
+
+</head>
+
+<body>
+  <div class="container">
+    <div class="row mt-5">
+      <div class="col-4"></div>
+      <div class="col-4">
+        <select name="country" type="submit" id="drop" >
+          
+        </select>
+        <div class="row">
+          <div class="col-4"></div>
+          <div class="col-4">
+            <button class="btn btn-success mt-3 " onclick="getCountryDetails()">fetch</button>
+
+
+
+          </div>
+          <div class="col-4"></div>
+        </div>
+      </div>
+      <div class="col-4"></div>
+    </div>
+    <div class="row">
+      <div class="col-4"></div>
+      <div class="col-4" id="data"></div>
+      <div class="col-4"></div>
+    </div>
+  </div>
+</body>
+<script>
+
+
+window.onload=getAllCountryDetails();
+  function listCountry(country) {
+    let html_data="";
+    for (let data of country) {
+
+
+      let c_name=data.name;
+      // console.log(c_name)
+      html_data +=`<option> ${c_name} </option>`;
+      // console.log(html_data) 
+    }
+    drop.innerHTML=html_data;
+
+  }
+
+
+  function getAllCountryDetails() {
+
+    fetch(`https://restcountries.eu/rest/v2/all`).then(country=>country.json()).then(data=>listCountry(data))
+
+
+
+  }
+  function displayValue(countrydata)
+     {
+        //flag,countryname,population,currencyname,currencysymbol
+        let flag = countrydata[0].flag;
+        // console.log(flag)
+        let population = countrydata[0].population;
+        let currency = countrydata[0].currencies[0].name;
+        let currency_symbol = countrydata[0].currencies[0].symbol;
+        let html_data = `<div class="card" style="width: 18rem;">
+  <img src="${flag}" class="card-img-top" alt="...">
+  <div class="card-body">
+    <h5 class="card-title">countryname :${countrydata[0].name}</h5>
+  </div>
+  <ul class="list-group list-group-flush">
+    <li class="list-group-item">Population:${population}</li>
+    <li class="list-group-item">Currency:${currency}</li>
+    <li class="list-group-item">Currency Symbol:${currency_symbol}</li>
+  </ul>
+  
+</div>`
+        data.innerHTML =html_data;
+    
+}
+
+
+
+
+
+  function getCountryDetails() {
+        
+
+        let countryname =drop.value;
+    fetch(`https://restcountries.eu/rest/v2/name/${countryname}?fullText=true`).then(country=>country.json()).then(data=>displayValue(data))
+
+
+    }
+
+
+
+
+</script>
+
+
+
+</html>
